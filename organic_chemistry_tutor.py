@@ -1,6 +1,7 @@
 import streamlit as st
 import random
 import openai
+from PIL import Image
 
 # Set up Streamlit app configuration
 st.set_page_config(page_title="Organic Chemistry Tutor", page_icon="🧪", layout="centered")
@@ -8,17 +9,34 @@ st.title("🌿 Organic Chemistry Tutor")
 
 # Sidebar menu selection
 menu = st.sidebar.selectbox("Choose a topic", [
-    "Functional Groups",
-    "IUPAC Naming",
-    "Homologous Series",
-    "Quick Quiz",
-    "AI-Powered Compound Naming"
+    "🏠 Home",
+    "🧬 Functional Groups",
+    "🔤 IUPAC Naming",
+    "📈 Homologous Series",
+    "🧠 Quick Quiz",
+    "🤖 AI Compound Naming"
 ])
 
-# ------------------------ Functional Groups ------------------------
-if menu == "Functional Groups":
-    st.header("🧬 Common Functional Groups")
+# ------------------------ Home Page ------------------------
+if menu == "🏠 Home":
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Organic_chemistry_structure.svg/800px-Organic_chemistry_structure.svg.png", width=500)
+    st.header("Welcome to the Organic Chemistry Tutor")
+    st.markdown("""
+    This interactive app helps you:
+    - Understand **functional groups**
+    - Master **IUPAC naming**
+    - Explore **homologous series**
+    - Test your knowledge with quizzes
+    - Use **AI** to name any organic compound 🔬
 
+    Navigate using the sidebar on the left. 👈
+    """)
+    st.success("Built with ❤️ using Streamlit + OpenAI")
+
+# ------------------------ Functional Groups ------------------------
+elif menu == "🧬 Functional Groups":
+    st.header("🧬 Common Functional Groups")
+    
     groups = {
         "Alkane": {"Group": "C-C (single bond)", "Example": "Ethane (C2H6)", "Desc": "Saturated hydrocarbon with only single bonds."},
         "Alkene": {"Group": "C=C (double bond)", "Example": "Ethene (C2H4)", "Desc": "Unsaturated hydrocarbon with one or more double bonds."},
@@ -33,15 +51,16 @@ if menu == "Functional Groups":
 
     for name, info in groups.items():
         with st.expander(name):
+            st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Organic_functional_groups.svg/640px-Organic_functional_groups.svg.png", width=300)
             st.write(f"**Functional Group:** {info['Group']}")
             st.write(f"**Example:** {info['Example']}")
             st.write(f"**Description:** {info['Desc']}")
 
 # ------------------------ IUPAC Naming ------------------------
-elif menu == "IUPAC Naming":
+elif menu == "🔤 IUPAC Naming":
     st.header("🔤 IUPAC Naming of Organic Compounds")
-
-    st.write("Use the IUPAC naming rules to identify the compound name.")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/IUPAC-2.svg/640px-IUPAC-2.svg.png", width=500)
+    
     formula = st.text_input("Enter a compound formula (e.g., CH3COOH, C2H5OH):")
     if formula:
         sample_responses = {
@@ -54,9 +73,9 @@ elif menu == "IUPAC Naming":
         st.markdown(result)
 
 # ------------------------ Homologous Series ------------------------
-elif menu == "Homologous Series":
+elif menu == "📈 Homologous Series":
     st.header("📈 Homologous Series and General Formulas")
-    st.write("Enter a value for \"n\" to generate general formulas.")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Alkanes.svg/640px-Alkanes.svg.png", width=500)
 
     n = st.slider("Value of n (1–10)", min_value=1, max_value=10, value=1)
 
@@ -67,33 +86,21 @@ elif menu == "Homologous Series":
     st.write(f"Formula: C{n}H{2*n}")
 
     st.subheader("Alkynes (CₙH₂ₙ₋₂)")
-    if n >= 2:
-        st.write(f"Formula: C{n}H{2*n - 2}")
-    else:
-        st.write("Formula not valid for n < 2")
+    st.write(f"Formula: C{n}H{2*n - 2}" if n >= 2 else "Formula not valid for n < 2")
 
     st.subheader("Alcohols (CₙH₂ₙ₊₁OH)")
     st.write(f"Formula: C{n}H{2*n + 1}OH")
 
-# ------------------------ Quiz Section ------------------------
-elif menu == "Quick Quiz":
+# ------------------------ Quick Quiz ------------------------
+elif menu == "🧠 Quick Quiz":
     st.header("🧠 Quick Quiz: Functional Groups & Naming")
-
+    
     quiz_questions = [
-        {"question": "Which functional group does ethanol contain?",
-         "options": ["Ketone", "Alcohol", "Alkene"], "answer": "Alcohol"},
-
-        {"question": "What is the general formula for alkenes?",
-         "options": ["CₙH₂ₙ", "CₙH₂ₙ₊₂", "CₙH₂ₙ₋₂"], "answer": "CₙH₂ₙ"},
-
-        {"question": "Which group is represented by -COOH?",
-         "options": ["Alcohol", "Ester", "Carboxylic Acid"], "answer": "Carboxylic Acid"},
-
-        {"question": "Which hydrocarbon has a triple bond?",
-         "options": ["Alkene", "Alkyne", "Alkane"], "answer": "Alkyne"},
-
-        {"question": "Which functional group is present in esters?",
-         "options": ["-OH", "-COOH", "-COO-"], "answer": "-COO-"}
+        {"question": "Which functional group does ethanol contain?", "options": ["Ketone", "Alcohol", "Alkene"], "answer": "Alcohol"},
+        {"question": "What is the general formula for alkenes?", "options": ["CₙH₂ₙ", "CₙH₂ₙ₊₂", "CₙH₂ₙ₋₂"], "answer": "CₙH₂ₙ"},
+        {"question": "Which group is represented by -COOH?", "options": ["Alcohol", "Ester", "Carboxylic Acid"], "answer": "Carboxylic Acid"},
+        {"question": "Which hydrocarbon has a triple bond?", "options": ["Alkene", "Alkyne", "Alkane"], "answer": "Alkyne"},
+        {"question": "Which functional group is present in esters?", "options": ["-OH", "-COOH", "-COO-"], "answer": "-COO-"}
     ]
 
     score = 0
@@ -109,15 +116,15 @@ elif menu == "Quick Quiz":
     st.markdown(f"### 🏁 Final Score: **{score} / {len(quiz_questions)}**")
 
 # ------------------------ AI Naming Assistant ------------------------
-elif menu == "AI-Powered Compound Naming":
+elif menu == "🤖 AI Compound Naming":
     st.header("🤖 AI Compound Naming Assistant")
-    st.write("Type a molecular formula or structure and let AI suggest the IUPAC name and explanation.")
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Chemical_structure_example.svg/640px-Chemical_structure_example.svg.png", width=400)
 
-    openai.api_key = st.secrets["openai_api_key"] if "openai_api_key" in st.secrets else "sk-REPLACE_WITH_YOUR_KEY"
+    openai.api_key = st.secrets["openai_api_key"] if "openai_api_key" in st.secrets else "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"
 
     user_input = st.text_input("Enter a compound formula or description (e.g., CH3CH2OH, a 3-carbon alcohol):")
 
-    if user_input and openai.api_key != "sk-REPLACE_WITH_YOUR_KEY":
+    if user_input and openai.api_key != "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":
         with st.spinner("Contacting AI..."):
             try:
                 response = openai.ChatCompletion.create(
@@ -133,5 +140,3 @@ elif menu == "AI-Powered Compound Naming":
                 st.markdown(result)
             except Exception as e:
                 st.error(f"⚠️ Error: {str(e)}")
-    elif user_input:
-        st.error("⚠️ Error: OpenAI API key not found. Please check Streamlit secrets.")
